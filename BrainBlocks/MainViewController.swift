@@ -24,7 +24,6 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     var totalTime = 120
     var progressValue: Float = 1.0
     var qrSet: Bool = false
-    var amount = 0
     var startAttempts = 0
     
     override func viewDidLoad() {
@@ -145,17 +144,31 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func verify() {
-        if verfied.amount != "null" {
-            print("received: \(verfied.amount)")
-            SweetAlert().showAlert("Payment Success", subTitle: "Thank you for using BrainBlocks!", style: AlertStyle.success)
-        } else {
-            SweetAlert().showAlert("Payment Failed", subTitle: "Payment could not be verified", style: AlertStyle.error)
-            endTimer()
-        }
+        SweetAlert().showAlert("Payment Success", subTitle: "Thank you for using BrainBlocks!", style: AlertStyle.success)
     }
     
     @objc func failed() {
-        cancelPayment()
-        SweetAlert().showAlert("Payment Failed", subTitle: "Payment could not process", style: AlertStyle.error)
+        SweetAlert().showAlert("Payment Failed", subTitle: "Do you want to retry?", style: AlertStyle.warning, buttonTitle:"No", buttonColor: UIColor.init(hexString: "C3C3C3"), otherButtonTitle:  "Yes, Try Again", otherButtonColor: UIColor.init(hexString: "E0755F")) { (cancelButton) -> Void in
+            if cancelButton == true {
+                self.cancelPayment()
+                SweetAlert().showAlert("Payment Failed", subTitle: "Payment could not process", style: AlertStyle.error)
+                return
+            } else {
+                // wait 1 second before attempting payment again
+                let when = DispatchTime.now() + 1
+                DispatchQueue.main.asyncAfter(deadline: when) {
+                    switch failedAction {
+                    case "verify":
+                        verifyPayment(token: currentToken.token)
+                    case "transfer":
+                        transferPayment(token: currentToken.token)
+                    default:
+                        self.cancelPayment()
+                        SweetAlert().showAlert("Payment Failed", subTitle: "Payment could not process", style: AlertStyle.error)
+                        return
+                    }
+                }
+            }
+        }
     }
 }

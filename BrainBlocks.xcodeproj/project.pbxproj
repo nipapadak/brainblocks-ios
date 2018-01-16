@@ -21,7 +21,6 @@
 		32100055200C59CF001AA685 /* Payment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32100054200C59CF001AA685 /* Payment.swift */; };
 		32100057200C60C7001AA685 /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32100056200C60C7001AA685 /* Token.swift */; };
 		32ED827C200D7B9F00ECDEB2 /* CodeReaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32ED827B200D7B9F00ECDEB2 /* CodeReaderViewController.swift */; };
-		32ED8280200D8AD200ECDEB2 /* Verify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32ED827F200D8AD200ECDEB2 /* Verify.swift */; };
 		32ED8282200D8B4100ECDEB2 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32ED8281200D8B4100ECDEB2 /* Data.swift */; };
 		33AF3262EBD1F893C40346AA /* Pods_BrainBlocksUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0D71A0B8003622ED5337B14 /* Pods_BrainBlocksUITests.framework */; };
 		49E51FFB6613ED9340F32835 /* Pods_BrainBlocks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF80FE59821E13906C7320A5 /* Pods_BrainBlocks.framework */; };
@@ -67,7 +66,6 @@
 		32100054200C59CF001AA685 /* Payment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payment.swift; sourceTree = "<group>"; };
 		32100056200C60C7001AA685 /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
 		32ED827B200D7B9F00ECDEB2 /* CodeReaderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeReaderViewController.swift; sourceTree = "<group>"; };
-		32ED827F200D8AD200ECDEB2 /* Verify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Verify.swift; sourceTree = "<group>"; };
 		32ED8281200D8B4100ECDEB2 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		32ED8283200D8C1800ECDEB2 /* BrainBlocks.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BrainBlocks.entitlements; sourceTree = "<group>"; };
 		4B5C92D2E9277BDA3204450C /* Pods-BrainBlocksTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BrainBlocksTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BrainBlocksTests/Pods-BrainBlocksTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -173,7 +171,6 @@
 				32100052200C5634001AA685 /* Extensions.swift */,
 				32100054200C59CF001AA685 /* Payment.swift */,
 				32100056200C60C7001AA685 /* Token.swift */,
-				32ED827F200D8AD200ECDEB2 /* Verify.swift */,
 				32ED8281200D8B4100ECDEB2 /* Data.swift */,
 			);
 			path = Models;
@@ -509,7 +506,6 @@
 				32100055200C59CF001AA685 /* Payment.swift in Sources */,
 				32100051200C4BAC001AA685 /* SweetAlert.swift in Sources */,
 				32ED8282200D8B4100ECDEB2 /* Data.swift in Sources */,
-				32ED8280200D8AD200ECDEB2 /* Verify.swift in Sources */,
 				32100018200C30F6001AA685 /* AppDelegate.swift in Sources */,
 				32100057200C60C7001AA685 /* Token.swift in Sources */,
 				3210004A200C317F001AA685 /* PageViewController.swift in Sources */,

@@ -13,8 +13,9 @@ import Alamofire
 // Wait 120 seconds for a successful payment: curl -X POST https://brainblocks.io/api/session/<token>/transfer
 // Verify a payment: curl https://brainblocks.io/api/session/<token>/verify
 
+var amount = 0
 var currentToken: TokenModel!
-var verfied: VerifyModel!
+var failedAction = ""
 
 class BrainBlocks {
     static let sessionURL = "https://brainblocks.io/api/session"
@@ -32,16 +33,20 @@ func startSession(amount: Int, destination: String) {
     
     Alamofire.request(BrainBlocks.sessionURL, method: .post, parameters: params, headers: headers).responseJSON { response in
         if let tokenJSON = response.result.value as? [String : AnyObject]! {
-            if tokenJSON["status"] as! String == "error" {
-                print("token json error")
+            
+            let status = tokenJSON["status"] as! String
+            switch status {
+            case "success":
+                // set current token for future usage
+                currentToken = TokenModel(json: tokenJSON)
+                print("session started")
+                print("account: \(currentToken.account)")
+                print("token: \(currentToken.token)")
+            default:
+                print("session error")
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "cancel"), object: nil)
                 return
             }
-            // set current token for future usage
-            currentToken = TokenModel.init(json: tokenJSON)
-            print("session started")
-            print("account: \(currentToken.account)")
-            print("token: \(currentToken.token)")
         }
     }
 }
@@ -54,15 +59,12 @@ func transferPayment(token: String) {
             let status = resultJSON["status"] as! String
             
             switch status {
-            case "error":
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "cancel"), object: nil)
-                return
             case "success":
-                currentToken = TokenModel.init(json: resultJSON)
-                print("session started")
-                print("account: \(currentToken.account)")
-                print("token: \(currentToken.token)")
+                print("transfer success")
+                verifyPayment(token: currentToken.token)
             default:
+                print("transfer error")
+                failedAction = "transfer"
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "cancel"), object: nil)
                 return
             }
@@ -71,14 +73,22 @@ func transferPayment(token: String) {
 }
 
 func verifyPayment(token: String) {
-    Alamofire.request("\(BrainBlocks.sessionURL)/\(token)/verify").responseJSON { response in
+    Alamofire.request("\(BrainBlocks.sessionURL)/\(token)/verify", method: .get).responseJSON { response in
         if let resultJSON = response.result.value as? [String : AnyObject]! {
-            verfied = VerifyModel.init(json: resultJSON)
-            print("verify response")
-            print(response)
-            print("session verified")
+            
+            // pull token from result json
+            let token = resultJSON["token"] as! String
+            let received = resultJSON["received"] as! Int
+            
+            // make sure works
+            if token == currentToken.token && received == amount {
+                print("payment success")
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "verify"), object: nil)
+            } else {
+                print("payment error")
+                failedAction = "verify"
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "cancel"), object: nil)
+            }
         }
     }
-    
-    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "verify"), object: nil)
 }
