@@ -40,8 +40,7 @@ func startSession(amount: Int, destination: String) {
                 // set current token for future usage
                 currentToken = TokenModel(json: tokenJSON)
                 print("session started")
-                print("account: \(currentToken.account)")
-                print("token: \(currentToken.token)")
+                print("session account: \(currentToken.account)")
             default:
                 print("session error")
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "cancel"), object: nil)

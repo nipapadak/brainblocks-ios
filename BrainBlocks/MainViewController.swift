@@ -11,7 +11,7 @@ import QRCode
 import NotificationCenter
 
 class MainViewController: UIViewController, UITextFieldDelegate {
-
+    
     @IBOutlet weak var amountTextField: UITextField!
     @IBOutlet weak var qrCodeImageView: UIImageView!
     @IBOutlet weak var progressBar: UIProgressView!
@@ -42,7 +42,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         cancelButton.layer.masksToBounds = true
         cancelButton.isHidden = true
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -85,7 +85,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         timerLabel.text = "\(totalTime) seconds remaining"
         progressBar.progress = progressValue
     }
-
+    
     func endTimer() {
         countdownTimer.invalidate()
         progressValue = 1.0
