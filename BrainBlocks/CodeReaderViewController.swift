@@ -94,7 +94,6 @@ class CodeReaderViewController: UIViewController, AVCaptureMetadataOutputObjects
     func setCode(decodedURL: String) {
         SweetAlert().showAlert(" Code Found", subTitle: decodedURL, style: AlertStyle.warning, buttonTitle:"No", buttonColor: UIColor.init(hexString: "C3C3C3"), otherButtonTitle:  "Yes, Set as recipient", otherButtonColor: UIColor.init(hexString: "E0755F")) { (isOtherButton) -> Void in
             if isOtherButton == true {
-                print("Not correct code")
                 self.codeFound = false
             } else {
                 SweetAlert().showAlert("Recipient Set!", subTitle: "Payment account is now: \(decodedURL)", style: AlertStyle.success)

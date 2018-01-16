@@ -14,8 +14,9 @@ import Alamofire
 // Verify a payment: curl https://brainblocks.io/api/session/<token>/verify
 
 var amount = 0
-var currentToken: TokenModel!
-var failedAction = ""
+var afManager : SessionManager!
+var token: String = ""
+var account: String = ""
 
 class BrainBlocks {
     static let sessionURL = "https://brainblocks.io/api/session"
@@ -35,12 +36,17 @@ func startSession(amount: Int, destination: String) {
         if let tokenJSON = response.result.value as? [String : AnyObject]! {
             
             let status = tokenJSON["status"] as! String
+            account = tokenJSON["account"] as! String
+            token = tokenJSON["token"] as! String
+            
             switch status {
             case "success":
                 // set current token for future usage
-                currentToken = TokenModel(json: tokenJSON)
                 print("session started")
-                print("session account: \(currentToken.account)")
+                print("session account: \(account)")
+            
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "start"), object: nil)
+                transferPayment(token: token)
             default:
                 print("session error")
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "failed"), object: nil)
@@ -51,8 +57,20 @@ func startSession(amount: Int, destination: String) {
 }
 
 func transferPayment(token: String) {
-    Alamofire.request("\(BrainBlocks.sessionURL)/\(token)/transfer", method: .post).responseJSON { response in
+    let configuration = URLSessionConfiguration.default
+    configuration.timeoutIntervalForRequest = 125
+    configuration.timeoutIntervalForResource = 125
+    afManager = Alamofire.SessionManager(configuration: configuration)
+    
+    afManager.request("\(BrainBlocks.sessionURL)/\(token)/transfer", method: .post).responseJSON { response in
         if let resultJSON = response.result.value as? [String : AnyObject]! {
+            
+            // check if results are nil and call failed if they are
+            if resultJSON == nil {
+                print("transfer result json nil")
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "failed"), object: nil)
+                return
+            }
             
             // hold status in let for switch
             let status = resultJSON["status"] as! String
@@ -60,12 +78,10 @@ func transferPayment(token: String) {
             switch status {
             case "success":
                 print("transfer success")
-                verifyPayment(token: currentToken.token)
+                verifyPayment(token: token)
             default:
                 print("transfer error")
-                failedAction = "transfer"
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "failed"), object: nil)
-                return
             }
         }
     }
@@ -80,12 +96,11 @@ func verifyPayment(token: String) {
             let received = resultJSON["received"] as! Int
             
             // make sure works
-            if token == currentToken.token && received == amount {
+            if token == token && received == amount {
                 print("payment success")
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "success"), object: nil)
             } else {
                 print("payment error")
-                failedAction = "verify"
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "failed"), object: nil)
             }
         }

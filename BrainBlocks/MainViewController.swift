@@ -9,6 +9,7 @@
 import UIKit
 import QRCode
 import NotificationCenter
+import Alamofire
 
 class MainViewController: UIViewController, UITextFieldDelegate {
     
@@ -30,8 +31,12 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         // listen for success notification
         NotificationCenter.default.addObserver(self, selector: #selector(success), name: NSNotification.Name(rawValue: "success"), object: nil)
+        
         // listen for failed notification
         NotificationCenter.default.addObserver(self, selector: #selector(failed), name: NSNotification.Name(rawValue: "failed"), object: nil)
+        
+        // listen for session start notificaiton
+        NotificationCenter.default.addObserver(self, selector: #selector(startTimer), name: NSNotification.Name(rawValue: "start"), object: nil)
         
         amountTextField.delegate = self
         amountTextField.addDoneButtonToKeyboard(myAction:  #selector(self.amountTextField.resignFirstResponder))
@@ -54,38 +59,30 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    func startTimer() {
-        indicator.startAnimating()
-        indicator.isHidden = false
+    @objc func startTimer() {
         countdownTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTime), userInfo: nil, repeats: true)
+        let when = DispatchTime.now() + 1.2 // wait for countdown to start
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            // set qr code
+            self.indicator.stopAnimating()
+            let qrCode = QRCode(account)
+            self.qrCodeImageView.image = qrCode?.image
+            self.accountLabel.text = account
+            self.accountLabel.isHidden = false
+            self.qrSet = true
+            self.totalTime = 120
+            self.timerLabel.isHidden = false
+            self.progressBar.isHidden = false
+            self.cancelButton.isHidden = false
+        }
     }
     
     @objc func updateTime() {
-        // set qr code
-        if currentToken != nil && currentToken.account != "" && qrSet == false {
-            indicator.stopAnimating()
-            let qrCode = QRCode(currentToken.account)
-            qrCodeImageView.image = qrCode?.image
-            accountLabel.text = currentToken.account
-            accountLabel.isHidden = false
-            qrSet = true
-            totalTime = 120
-            timerLabel.isHidden = false
-            progressBar.isHidden = false
-            cancelButton.isHidden = false
-        } else if currentToken == nil && qrSet == false && startAttempts > 1 {
-            cancelPayment()
-        } else if currentToken == nil && qrSet == false && startAttempts < 2 {
-            startAttempts += 1
-        }
-        
         if totalTime != 0 {
             totalTime -= 1
             progressValue = progressValue - 0.00833
         } else {
             endTimer()
-            // MARK: transfer
-            transferPayment(token: currentToken.token)
         }
         
         timerLabel.text = "\(totalTime) seconds remaining"
@@ -93,8 +90,8 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     }
     
     func endTimer() {
-        indicator.startAnimating()
-        indicator.isHidden = false
+        indicator.stopAnimating()
+        indicator.isHidden = true
         countdownTimer.invalidate()
         progressValue = 1.0
         cancelButton.isHidden = true
@@ -112,14 +109,17 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         if paymentAccount == "" {
             SweetAlert().showAlert("Setup Payment Account", subTitle: "Setup your payment account first before accepting payments", style: AlertStyle.error)
             sender.text = ""
+            print("payment account now setup yet")
             return
         }
         
         // pull amount input and * 1000 to convert into rai
         if sender.text != "" {
-            let enteredAmount = Int(sender.text!)!
-            amount = (enteredAmount * 1000)
+            let enteredAmount = Double(sender.text!)!
+            amount = Int((enteredAmount * 1000.0))
+            print("payment amount: \(amount)")
         } else {
+            print("invalid amount")
             return
         }
         
@@ -128,14 +128,14 @@ class MainViewController: UIViewController, UITextFieldDelegate {
             SweetAlert().showAlert("XRB Max", subTitle: "Max XRB allowed: 5.0", style: AlertStyle.error)
             return
         } else {
-            startTimer()
             startSession(amount: amount, destination: paymentAccount)
+            indicator.startAnimating()
+            indicator.isHidden = false
         }
     }
     
     @IBAction func cancelPayment() {
         // cancel payment and reset everything for another session
-        print("session canceled")
         cancelButton.isHidden = true
         timerLabel.isHidden = true
         progressBar.isHidden = true
@@ -148,6 +148,17 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         startAttempts = 0
         qrSet = false
         countdownTimer.invalidate()
+        
+        print("session canceled")
+        
+        if token != "" {
+            let transferURL = URL(string: "\(BrainBlocks.sessionURL)/\(token)/transfer")!
+            print(transferURL)
+            
+            afManager.session.getAllTasks { task in
+                task.forEach { $0.cancel() }
+            }
+        }
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -157,38 +168,14 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     
     @objc func success() {
         // display success alert
+        endTimer()
         SweetAlert().showAlert("Payment Success", subTitle: "Thank you for using BrainBlocks!", style: AlertStyle.success)
     }
     
     @objc func failed() {
-        SweetAlert().showAlert("Payment Failed", subTitle: "Do you want to retry?", style: AlertStyle.warning, buttonTitle:"No", buttonColor: UIColor.init(hexString: "C3C3C3"), otherButtonTitle:  "Yes, Try Again", otherButtonColor: UIColor.init(hexString: "E0755F")) { (cancelButton) -> Void in
-            if cancelButton == true {
-                
-                // cancel payment
-                self.cancelPayment()
-                SweetAlert().showAlert("Payment Failed", subTitle: "Payment could not process", style: AlertStyle.error)
-                return
-                
-            } else {
-                // wait 1 second before attempting payment again
-                let when = DispatchTime.now() + 1
-                DispatchQueue.main.asyncAfter(deadline: when) {
-                    switch failedAction {
-                    case "verify":
-                        self.indicator.startAnimating()
-                        verifyPayment(token: currentToken.token)
-                    case "transfer":
-                        self.indicator.startAnimating()
-                        transferPayment(token: currentToken.token)
-                    default:
-                        // cancel payment
-                        self.cancelPayment()
-                        SweetAlert().showAlert("Payment Failed", subTitle: "Payment could not process", style: AlertStyle.error)
-                        return
-                    }
-                }
-            }
-        }
+        // cancel payment
+        cancelPayment()
+        SweetAlert().showAlert("Payment Failed", subTitle: "Payment could not process", style: AlertStyle.error)
     }
     
 }
