@@ -217,7 +217,7 @@
                                         <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <state key="normal" title="Update Manually"/>
                                         <connections>
-                                            <action selector="setPaymentAccount:" destination="6fA-d3-atq" eventType="touchUpInside" id="7PE-JI-NXE"/>
+                                            <action selector="setPayment:" destination="6fA-d3-atq" eventType="touchUpInside" id="oNI-S7-MkN"/>
                                         </connections>
                                     </button>
                                 </subviews>

@@ -84,7 +84,7 @@ class CodeReaderViewController: UIViewController, AVCaptureMetadataOutputObjects
     
     // MARK: - Helper methods
     func setCode(decodedURL: String) {
-        SweetAlert().showAlert("QR Code Found", subTitle: decodedURL, style: AlertStyle.warning, buttonTitle:"No", buttonColor: UIColor.init(hexString: "C3C3C3"), otherButtonTitle:  "Yes, Set as recipient", otherButtonColor: UIColor.init(hexString: "E0755F")) { (isOtherButton) -> Void in
+        SweetAlert().showAlert(" Code Found", subTitle: decodedURL, style: AlertStyle.warning, buttonTitle:"No", buttonColor: UIColor.init(hexString: "C3C3C3"), otherButtonTitle:  "Yes, Set as recipient", otherButtonColor: UIColor.init(hexString: "E0755F")) { (isOtherButton) -> Void in
             if isOtherButton == true {
                 print("Not correct code")
                 self.codeFound = false
@@ -114,7 +114,7 @@ class CodeReaderViewController: UIViewController, AVCaptureMetadataOutputObjects
             let barCodeObject = videoPreviewLayer?.transformedMetadataObject(for: metadataObj)
             qrCodeFrameView?.frame = barCodeObject!.bounds
             
-            if metadataObj.stringValue != nil && codeFound == false {
+            if metadataObj.stringValue != nil && codeFound == false && metadataObj.stringValue?.validAddress() == true {
                 setCode(decodedURL: metadataObj.stringValue!)
                 codeLabel.text = metadataObj.stringValue
                 codeFound = true

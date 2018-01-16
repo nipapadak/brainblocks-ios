@@ -43,6 +43,10 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         cancelButton.isHidden = true
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        UIApplication.shared.statusBarStyle = preferredStatusBarStyle
+    }
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -170,5 +174,9 @@ class MainViewController: UIViewController, UITextFieldDelegate {
                 }
             }
         }
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .default
     }
 }

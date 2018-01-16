@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-extension UITextField{
+extension UITextField {
     func addDoneButtonToKeyboard(myAction:Selector?){
         let doneToolbar: UIToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 300, height: 30))
         doneToolbar.barStyle = UIBarStyle.default
@@ -25,6 +25,18 @@ extension UITextField{
         doneToolbar.sizeToFit()
         
         self.inputAccessoryView = doneToolbar
+    }
+}
+
+extension String {
+    func validAddress() -> Bool {
+        if self.range(of: "^xrb_[a-z0-9]{60}$", options: .regularExpression) != nil {
+            print("Valid Address")
+            return true
+        } else {
+            print("Not Valid Address")
+            return false
+        }
     }
 }
 

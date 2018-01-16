@@ -24,6 +24,8 @@ class SettingsViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        UIApplication.shared.statusBarStyle = preferredStatusBarStyle
+        
         if paymentAccount != "" {
             accountLabel.text = "Payment Account: \(paymentAccount)"
             updateManualllyButton.setTitle("Set Manuallly", for: .normal)
@@ -45,8 +47,12 @@ class SettingsViewController: UIViewController {
         }
     }
     
-    @IBAction func setPaymentAccount(_ sender: UIButton) {
+    @IBAction func setPayment(_ sender: UIButton) {
         print("set new payment account")
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
 }
