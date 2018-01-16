@@ -368,6 +368,7 @@
                         <outlet property="addressTextView" destination="eft-vd-KIM" id="2Sa-Vg-Wt9"/>
                         <outlet property="codeLabel" destination="d8Q-ZX-AFD" id="UAz-LU-3BH"/>
                         <outlet property="submitAddress" destination="Mjm-Pi-hNP" id="XMG-UQ-XYM"/>
+                        <outlet property="submitButton" destination="DYC-HH-IZy" id="FGb-Pt-d5e"/>
                         <outlet property="submitView" destination="n5R-Bp-dZb" id="9C1-Mw-eAe"/>
                         <outlet property="topBar" destination="DCf-yf-oC3" id="XAe-Tz-Rc5"/>
                     </connections>

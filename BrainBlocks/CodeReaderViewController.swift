@@ -16,6 +16,7 @@ class CodeReaderViewController: UIViewController, AVCaptureMetadataOutputObjects
     @IBOutlet weak var submitAddress: UIButton!
     @IBOutlet weak var addressTextView: UITextView!
     @IBOutlet weak var submitView: UIView!
+    @IBOutlet weak var submitButton: UIButton!
     
     var captureSession = AVCaptureSession()
     var videoPreviewLayer: AVCaptureVideoPreviewLayer?
@@ -71,6 +72,7 @@ class CodeReaderViewController: UIViewController, AVCaptureMetadataOutputObjects
         // Move the message label and top bar to the front
         view.bringSubview(toFront: codeLabel)
         view.bringSubview(toFront: topBar)
+        view.bringSubview(toFront: submitButton)
         
         // Initialize QR Code Frame to highlight the QR code
         qrCodeFrameView = UIView()

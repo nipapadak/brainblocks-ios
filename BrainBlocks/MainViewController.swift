@@ -28,9 +28,11 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        // listen for success notification
         NotificationCenter.default.addObserver(self, selector: #selector(success), name: NSNotification.Name(rawValue: "success"), object: nil)
+        // listen for failed notification
         NotificationCenter.default.addObserver(self, selector: #selector(failed), name: NSNotification.Name(rawValue: "failed"), object: nil)
+        
         amountTextField.delegate = self
         amountTextField.addDoneButtonToKeyboard(myAction:  #selector(self.amountTextField.resignFirstResponder))
         accountLabel.isHidden = true
@@ -154,15 +156,19 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func success() {
+        // display success alert
         SweetAlert().showAlert("Payment Success", subTitle: "Thank you for using BrainBlocks!", style: AlertStyle.success)
     }
     
     @objc func failed() {
         SweetAlert().showAlert("Payment Failed", subTitle: "Do you want to retry?", style: AlertStyle.warning, buttonTitle:"No", buttonColor: UIColor.init(hexString: "C3C3C3"), otherButtonTitle:  "Yes, Try Again", otherButtonColor: UIColor.init(hexString: "E0755F")) { (cancelButton) -> Void in
             if cancelButton == true {
+                
+                // cancel payment
                 self.cancelPayment()
                 SweetAlert().showAlert("Payment Failed", subTitle: "Payment could not process", style: AlertStyle.error)
                 return
+                
             } else {
                 // wait 1 second before attempting payment again
                 let when = DispatchTime.now() + 1
@@ -175,6 +181,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
                         self.indicator.startAnimating()
                         transferPayment(token: currentToken.token)
                     default:
+                        // cancel payment
                         self.cancelPayment()
                         SweetAlert().showAlert("Payment Failed", subTitle: "Payment could not process", style: AlertStyle.error)
                         return
