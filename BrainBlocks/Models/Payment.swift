@@ -37,6 +37,7 @@ func startSession(amount: Int, destination: String) {
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "cancel"), object: nil)
                 return
             }
+            // set current token for future usage
             currentToken = TokenModel.init(json: tokenJSON)
             print("session started")
             print("account: \(currentToken.account)")
@@ -47,23 +48,24 @@ func startSession(amount: Int, destination: String) {
 
 func transferPayment(token: String) {
     Alamofire.request("\(BrainBlocks.sessionURL)/\(token)/transfer", method: .post).responseJSON { response in
-        if let tokenJSON = response.result.value as? [String : AnyObject]! {
-            if tokenJSON["status"] as! String == "error" {
-                print("token json error")
+        if let resultJSON = response.result.value as? [String : AnyObject]! {
+            
+            // hold status in let for switch
+            let status = resultJSON["status"] as! String
+            
+            switch status {
+            case "error":
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "cancel"), object: nil)
+                return
+            case "success":
+                currentToken = TokenModel.init(json: resultJSON)
+                print("session started")
+                print("account: \(currentToken.account)")
+                print("token: \(currentToken.token)")
+            default:
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "cancel"), object: nil)
                 return
             }
-            currentToken = TokenModel.init(json: tokenJSON)
-            print("session started")
-            print("account: \(currentToken.account)")
-            print("token: \(currentToken.token)")
-        }
-        if let json = response.result.value {
-            print("transfer Successful")
-            verifyPayment(token: currentToken.token)
-        } else {
-            print()
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "cancel"), object: nil)
         }
     }
 }
