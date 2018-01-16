@@ -44,7 +44,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        UIApplication.shared.statusBarStyle = preferredStatusBarStyle
+        UIApplication.shared.statusBarStyle = .default
     }
 
     override func didReceiveMemoryWarning() {
@@ -91,6 +91,8 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     }
     
     func endTimer() {
+        indicator.startAnimating()
+        indicator.isHidden = false
         countdownTimer.invalidate()
         progressValue = 1.0
         cancelButton.isHidden = true
@@ -167,8 +169,10 @@ class MainViewController: UIViewController, UITextFieldDelegate {
                 DispatchQueue.main.asyncAfter(deadline: when) {
                     switch failedAction {
                     case "verify":
+                        self.indicator.startAnimating()
                         verifyPayment(token: currentToken.token)
                     case "transfer":
+                        self.indicator.startAnimating()
                         transferPayment(token: currentToken.token)
                     default:
                         self.cancelPayment()
@@ -180,7 +184,4 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .default
-    }
 }

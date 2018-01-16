@@ -21,7 +21,7 @@ class SettingsViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        UIApplication.shared.statusBarStyle = preferredStatusBarStyle
+        UIApplication.shared.statusBarStyle = .lightContent
         
         if paymentAccount != "" {
             accountLabel.text = "Payment Account: \(paymentAccount)"
@@ -41,9 +41,4 @@ class SettingsViewController: UIViewController {
             present(vc, animated: true, completion: nil)
         }
     }
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
-    
 }
