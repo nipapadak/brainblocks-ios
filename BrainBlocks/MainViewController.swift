@@ -9,7 +9,6 @@
 import UIKit
 import QRCode
 import NotificationCenter
-import Alamofire
 
 class MainViewController: UIViewController, UITextFieldDelegate {
     
@@ -77,6 +76,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    // update timmer label and progress bar
     @objc func updateTime() {
         if totalTime != 0 {
             totalTime -= 1
@@ -89,6 +89,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         progressBar.progress = progressValue
     }
     
+    // end timer and reset back to start for next payment
     func endTimer() {
         indicator.stopAnimating()
         indicator.isHidden = true
@@ -134,8 +135,9 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    
+    // cancel payment and reset everything for another session
     @IBAction func cancelPayment() {
-        // cancel payment and reset everything for another session
         cancelButton.isHidden = true
         timerLabel.isHidden = true
         progressBar.isHidden = true
@@ -151,10 +153,8 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         
         print("session canceled")
         
+        // if token is not empty, cancel all networking tasks in afManager
         if token != "" {
-            let transferURL = URL(string: "\(BrainBlocks.sessionURL)/\(token)/transfer")!
-            print(transferURL)
-            
             afManager.session.getAllTasks { task in
                 task.forEach { $0.cancel() }
             }

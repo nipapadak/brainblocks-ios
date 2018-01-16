@@ -68,6 +68,7 @@ func transferPayment(token: String) {
             // check if results are nil and call failed if they are
             if resultJSON == nil {
                 print("transfer result json nil")
+                // MARK: Add method to tell user that payment has been canceled and not just normal failed error
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "failed"), object: nil)
                 return
             }
@@ -95,12 +96,13 @@ func verifyPayment(token: String) {
             let token = resultJSON["token"] as! String
             let received = resultJSON["received"] as! Int
             
-            // make sure works
+            // make sure token and received amounts are correct
             if token == token && received == amount {
                 print("payment success")
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "success"), object: nil)
             } else {
                 print("payment error")
+                // MARK: update this to tell user that payment amount may not be correct
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "failed"), object: nil)
             }
         }
