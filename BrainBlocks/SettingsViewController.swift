@@ -11,7 +11,6 @@ import UIKit
 class SettingsViewController: UIViewController {
     
     @IBOutlet weak var scanCodeButton: UIButton!
-    @IBOutlet weak var updateManualllyButton: UIButton!
     @IBOutlet weak var accountLabel: UILabel!
     
     override func viewDidLoad() {
@@ -19,8 +18,6 @@ class SettingsViewController: UIViewController {
         // Do any additional setup after loading the view.
         scanCodeButton.layer.cornerRadius = 10
         scanCodeButton.layer.masksToBounds = true
-        updateManualllyButton.layer.cornerRadius = 10
-        updateManualllyButton.layer.masksToBounds = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -28,11 +25,9 @@ class SettingsViewController: UIViewController {
         
         if paymentAccount != "" {
             accountLabel.text = "Payment Account: \(paymentAccount)"
-            updateManualllyButton.setTitle("Set Manuallly", for: .normal)
         } else {
             SweetAlert().showAlert("Setup Payment Account", subTitle: "Without a payment account, we can not pay you 🙁", style: AlertStyle.error)
             accountLabel.text = "Payment Account: Not Set"
-            updateManualllyButton.setTitle("Update Manuallly", for: .normal)
         }
     }
 
@@ -45,10 +40,6 @@ class SettingsViewController: UIViewController {
         if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "codeReader") as? CodeReaderViewController {
             present(vc, animated: true, completion: nil)
         }
-    }
-    
-    @IBAction func setPayment(_ sender: UIButton) {
-        print("set new payment account")
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {

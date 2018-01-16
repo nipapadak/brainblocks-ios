@@ -13,6 +13,9 @@ class CodeReaderViewController: UIViewController, AVCaptureMetadataOutputObjects
     
     @IBOutlet weak var codeLabel: UILabel!
     @IBOutlet weak var topBar: UIView!
+    @IBOutlet weak var submitAddress: UIButton!
+    @IBOutlet weak var addressTextView: UITextView!
+    @IBOutlet weak var submitView: UIView!
     
     var captureSession = AVCaptureSession()
     var videoPreviewLayer: AVCaptureVideoPreviewLayer?
@@ -23,7 +26,10 @@ class CodeReaderViewController: UIViewController, AVCaptureMetadataOutputObjects
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        submitAddress.layer.cornerRadius = 10
+        submitAddress.layer.masksToBounds = true
+        submitView.isHidden = true
+
         // Get the back-facing camera for capturing videos
         let deviceDiscoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInDualCamera], mediaType: AVMediaType.video, position: .back)
         
@@ -89,7 +95,7 @@ class CodeReaderViewController: UIViewController, AVCaptureMetadataOutputObjects
                 print("Not correct code")
                 self.codeFound = false
             } else {
-                SweetAlert().showAlert("Recipient Set!", subTitle: "Payment recipient is now: \(decodedURL)", style: AlertStyle.success)
+                SweetAlert().showAlert("Recipient Set!", subTitle: "Payment account is now: \(decodedURL)", style: AlertStyle.success)
                 print("Recipient Set! \(decodedURL)")
                 paymentAccount = decodedURL
                 setPaymentAccount()
@@ -126,4 +132,32 @@ class CodeReaderViewController: UIViewController, AVCaptureMetadataOutputObjects
         self.dismiss(animated: true, completion: nil)
     }
     
+    @IBAction func enterManually(_ sender: UIButton) {
+        UIApplication.shared.statusBarStyle = .default
+        submitView.isHidden = false
+        captureSession.stopRunning()
+        view.addSubview(submitView)
+    }
+    
+    @IBAction func closeSubmitView(_ sender: UIButton) {
+        UIApplication.shared.statusBarStyle = .lightContent
+        self.view.endEditing(true)
+        submitView.isHidden = true
+        captureSession.startRunning()
+        view.bringSubview(toFront: codeLabel)
+        view.bringSubview(toFront: topBar)
+    }
+    
+    @IBAction func submitAddress(_ sender: UIButton) {
+        self.view.endEditing(true)
+        if addressTextView.text.validAddress() == true {
+            UIApplication.shared.statusBarStyle = .lightContent
+            paymentAccount = addressTextView.text
+            setPaymentAccount()
+            SweetAlert().showAlert("Recipient Set!", subTitle: "Payment account is now: \(addressTextView.text)", style: AlertStyle.success)
+            self.dismiss(animated: true, completion: nil)
+        } else {
+            SweetAlert().showAlert("Invalid Address", subTitle: "Please check your Address", style: AlertStyle.error)
+        }
+    }
 }
