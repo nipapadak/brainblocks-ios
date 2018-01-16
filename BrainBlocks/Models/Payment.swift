@@ -43,7 +43,7 @@ func startSession(amount: Int, destination: String) {
                 print("session account: \(currentToken.account)")
             default:
                 print("session error")
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "cancel"), object: nil)
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "failed"), object: nil)
                 return
             }
         }
@@ -64,7 +64,7 @@ func transferPayment(token: String) {
             default:
                 print("transfer error")
                 failedAction = "transfer"
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "cancel"), object: nil)
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "failed"), object: nil)
                 return
             }
         }
@@ -82,11 +82,11 @@ func verifyPayment(token: String) {
             // make sure works
             if token == currentToken.token && received == amount {
                 print("payment success")
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "verify"), object: nil)
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "success"), object: nil)
             } else {
                 print("payment error")
                 failedAction = "verify"
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "cancel"), object: nil)
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "failed"), object: nil)
             }
         }
     }

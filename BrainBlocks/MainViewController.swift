@@ -29,8 +29,8 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        NotificationCenter.default.addObserver(self, selector: #selector(verify), name: NSNotification.Name(rawValue: "verify"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(failed), name: NSNotification.Name(rawValue: "cancel"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(success), name: NSNotification.Name(rawValue: "success"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(failed), name: NSNotification.Name(rawValue: "failed"), object: nil)
         amountTextField.delegate = self
         amountTextField.addDoneButtonToKeyboard(myAction:  #selector(self.amountTextField.resignFirstResponder))
         accountLabel.isHidden = true
@@ -104,19 +104,22 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func amountWasSet(_ sender: UITextField) {
+        // check to make sure the payment account is available
         if paymentAccount == "" {
             SweetAlert().showAlert("Setup Payment Account", subTitle: "Setup your payment account first before accepting payments", style: AlertStyle.error)
             sender.text = ""
             return
         }
         
+        // pull amount input and * 1000 to convert into rai
         if sender.text != "" {
-            //amount = Int(sender.text!)!
-            amount = 1000
+            let enteredAmount = Int(sender.text!)!
+            amount = (enteredAmount * 1000)
         } else {
             return
         }
         
+        // make sure the amount is less than the api max - 5000 rai
         if amount > 5000 {
             SweetAlert().showAlert("XRB Max", subTitle: "Max XRB allowed: 5.0", style: AlertStyle.error)
             return
@@ -127,6 +130,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func cancelPayment() {
+        // cancel payment and reset everything for another session
         print("session canceled")
         cancelButton.isHidden = true
         timerLabel.isHidden = true
@@ -147,7 +151,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         return false
     }
     
-    @objc func verify() {
+    @objc func success() {
         SweetAlert().showAlert("Payment Success", subTitle: "Thank you for using BrainBlocks!", style: AlertStyle.success)
     }
     
