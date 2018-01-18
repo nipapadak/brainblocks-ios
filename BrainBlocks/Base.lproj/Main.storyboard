@@ -6,7 +6,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -56,91 +55,24 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="juJ-Du-2rz">
-                                <rect key="frame" x="112" y="324" width="150" height="150"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="150" id="k71-9c-qax"/>
-                                    <constraint firstAttribute="width" constant="150" id="yUd-88-uy1"/>
-                                </constraints>
-                            </imageView>
-                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="aGw-he-HMZ">
-                                <rect key="frame" x="36" y="554" width="303" height="2.5"/>
-                                <color key="tintColor" red="0.29019607843137252" green="0.53725490196078429" blue="0.61960784313725492" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="trackTintColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                            </progressView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="120 seconds remaining" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Opj-2Y-Xn9">
-                                <rect key="frame" x="0.0" y="565.5" width="375" height="17"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x1P-l3-NGg">
-                                <rect key="frame" x="30" y="590.5" width="315" height="40"/>
-                                <color key="backgroundColor" red="0.83921568627450982" green="0.32941176470588235" blue="0.396078431372549" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="g0S-9A-9k0"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                                <state key="normal" title="Cancel Payment">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <action selector="cancelPayment" destination="bsD-RA-lTA" eventType="touchUpInside" id="wQj-Zo-dlW"/>
-                                </connections>
-                            </button>
-                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="H4c-FI-iK8">
-                                <rect key="frame" x="169" y="315.5" width="37" height="37"/>
-                                <color key="color" red="0.66422420739999999" green="0.66424006219999998" blue="0.66423153879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </activityIndicatorView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="xrb_1jnatu97dka1h49zudxtpxxrho3j591jwu5bzsn7h1kzn3gwit4kejak756y" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s3h-XV-fMe" userLabel="Account Label">
-                                <rect key="frame" x="30" y="494" width="315" height="40"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="pWl-aO-G3t"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="UnF-vx-nlX" firstAttribute="leading" secondItem="mD6-uW-Np0" secondAttribute="leading" constant="15" id="1Zv-dS-ggJ"/>
                             <constraint firstItem="mD6-uW-Np0" firstAttribute="bottom" secondItem="yht-W9-fbP" secondAttribute="bottom" constant="15" id="8GI-lR-Zac"/>
-                            <constraint firstItem="s3h-XV-fMe" firstAttribute="leading" secondItem="mD6-uW-Np0" secondAttribute="leading" constant="30" id="FPK-KP-OhZ"/>
-                            <constraint firstItem="juJ-Du-2rz" firstAttribute="centerX" secondItem="Zad-OA-MBf" secondAttribute="centerX" id="JIQ-Aw-tYy"/>
                             <constraint firstItem="gkF-Py-DDx" firstAttribute="leading" secondItem="5uy-P6-eTX" secondAttribute="trailing" constant="10" id="LUn-Jf-oid"/>
-                            <constraint firstItem="mD6-uW-Np0" firstAttribute="trailing" secondItem="s3h-XV-fMe" secondAttribute="trailing" constant="30" id="MtD-R1-qb4"/>
-                            <constraint firstItem="H4c-FI-iK8" firstAttribute="centerX" secondItem="Zad-OA-MBf" secondAttribute="centerX" id="NWj-ZP-hdc"/>
                             <constraint firstItem="mD6-uW-Np0" firstAttribute="trailing" secondItem="UnF-vx-nlX" secondAttribute="trailing" constant="15" id="SFV-lc-tHC"/>
-                            <constraint firstItem="aGw-he-HMZ" firstAttribute="leading" secondItem="Zad-OA-MBf" secondAttribute="leadingMargin" constant="20" id="Vbm-sk-3TS"/>
-                            <constraint firstItem="Opj-2Y-Xn9" firstAttribute="leading" secondItem="mD6-uW-Np0" secondAttribute="leading" id="b8N-na-jSQ"/>
                             <constraint firstItem="UnF-vx-nlX" firstAttribute="top" secondItem="mD6-uW-Np0" secondAttribute="top" constant="60" id="co1-zW-wHr"/>
-                            <constraint firstItem="H4c-FI-iK8" firstAttribute="centerY" secondItem="Zad-OA-MBf" secondAttribute="centerY" id="czh-tH-I29"/>
-                            <constraint firstItem="mD6-uW-Np0" firstAttribute="trailing" secondItem="Opj-2Y-Xn9" secondAttribute="trailing" id="eR9-X1-Uu4"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="aGw-he-HMZ" secondAttribute="trailing" constant="20" id="fqD-e3-gVx"/>
                             <constraint firstItem="mD6-uW-Np0" firstAttribute="trailing" secondItem="gkF-Py-DDx" secondAttribute="trailing" constant="30" id="h98-GK-CZy"/>
                             <constraint firstItem="5uy-P6-eTX" firstAttribute="leading" secondItem="mD6-uW-Np0" secondAttribute="leading" constant="25" id="hvM-D3-u1w"/>
-                            <constraint firstItem="mD6-uW-Np0" firstAttribute="trailing" secondItem="x1P-l3-NGg" secondAttribute="trailing" constant="30" id="kI8-4A-5sG"/>
                             <constraint firstItem="gkF-Py-DDx" firstAttribute="centerY" secondItem="5uy-P6-eTX" secondAttribute="centerY" id="lPZ-Qw-oud"/>
-                            <constraint firstItem="x1P-l3-NGg" firstAttribute="top" secondItem="Opj-2Y-Xn9" secondAttribute="bottom" constant="8" id="maI-ZW-bZY"/>
                             <constraint firstItem="5uy-P6-eTX" firstAttribute="top" secondItem="UnF-vx-nlX" secondAttribute="bottom" constant="30" id="o3p-Qu-3hQ"/>
-                            <constraint firstItem="aGw-he-HMZ" firstAttribute="top" secondItem="s3h-XV-fMe" secondAttribute="bottom" constant="20" id="rPS-dc-Biw"/>
                             <constraint firstItem="yht-W9-fbP" firstAttribute="centerX" secondItem="Zad-OA-MBf" secondAttribute="centerX" id="rlw-tS-f61"/>
-                            <constraint firstItem="s3h-XV-fMe" firstAttribute="top" secondItem="juJ-Du-2rz" secondAttribute="bottom" constant="20" id="udf-zg-lbK"/>
-                            <constraint firstItem="Opj-2Y-Xn9" firstAttribute="top" secondItem="aGw-he-HMZ" secondAttribute="bottom" constant="10" id="wMY-tV-OAT"/>
-                            <constraint firstItem="juJ-Du-2rz" firstAttribute="top" secondItem="gkF-Py-DDx" secondAttribute="bottom" constant="45" id="yMT-HO-TvY"/>
-                            <constraint firstItem="x1P-l3-NGg" firstAttribute="leading" secondItem="mD6-uW-Np0" secondAttribute="leading" constant="30" id="yPO-ka-kFf"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="mD6-uW-Np0"/>
                     </view>
                     <connections>
-                        <outlet property="accountLabel" destination="s3h-XV-fMe" id="Yt8-Nf-493"/>
                         <outlet property="amountTextField" destination="gkF-Py-DDx" id="o1V-cU-0GK"/>
-                        <outlet property="cancelButton" destination="x1P-l3-NGg" id="pD3-kk-ksX"/>
-                        <outlet property="indicator" destination="H4c-FI-iK8" id="zqv-29-iSg"/>
-                        <outlet property="progressBar" destination="aGw-he-HMZ" id="KuN-9C-xR3"/>
-                        <outlet property="qrCodeImageView" destination="juJ-Du-2rz" id="6tA-vj-nTd"/>
-                        <outlet property="timerLabel" destination="Opj-2Y-Xn9" id="3mv-bs-NAy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="F3L-jn-FXF" userLabel="First Responder" sceneMemberID="firstResponder"/>

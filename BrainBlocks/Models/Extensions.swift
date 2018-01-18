@@ -31,10 +31,10 @@ extension UITextField {
 extension String {
     func validAddress() -> Bool {
         if self.range(of: "^xrb_[a-z0-9]{60}$", options: .regularExpression) != nil {
-            print("Valid Address")
+            // Valid Raiblocks Address
             return true
         } else {
-            print("Not Valid Address")
+            // Not Valid Raiblocks Address
             return false
         }
     }

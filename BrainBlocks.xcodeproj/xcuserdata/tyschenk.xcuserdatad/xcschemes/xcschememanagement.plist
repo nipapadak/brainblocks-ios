@@ -7,6 +7,11 @@
 		<key>BrainBlocks.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
+			<integer>7</integer>
+		</dict>
+		<key>BrainBlocksKit.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
 			<integer>6</integer>
 		</dict>
 	</dict>

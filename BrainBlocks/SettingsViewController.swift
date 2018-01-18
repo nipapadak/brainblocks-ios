@@ -15,7 +15,7 @@ class SettingsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        // Do any additional setup after loading the vi=ew.
         scanCodeButton.layer.cornerRadius = 10
         scanCodeButton.layer.masksToBounds = true
     }
